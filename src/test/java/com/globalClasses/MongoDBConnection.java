@@ -5,19 +5,25 @@ import java.io.InputStream;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
+import com.mongodb.client.model.Filters;
 
 
 public class MongoDBConnection {
@@ -117,5 +123,31 @@ public class MongoDBConnection {
         }
 
         return bool;
+    }
+    
+    public JSONArray executeQuerySelectID(String collection, String field, String filter) {
+		JSONObject json = new JSONObject();
+		JSONArray resultJ = new JSONArray();
+		MongoCollection<Document> coll = mDataBase.getCollection(collection);
+		AggregateIterable<Document> output = coll.aggregate(Arrays.asList(Aggregates.sample(1)));
+		try (MongoCursor<Document> cursor = coll.find(Filters.eq(field, new ObjectId(filter))).iterator()) {
+			while (cursor.hasNext()) {
+				resultJ.put(json = new JSONObject(cursor.next().toJson()));
+			}
+		}
+		return resultJ;
+	}
+    
+    public JSONArray obtainAll(String collection) {
+    	JSONObject json = new JSONObject();
+		JSONArray resultJ = new JSONArray();
+		MongoCollection<Document> coll = mDataBase.getCollection(collection);
+		AggregateIterable<Document> output = coll.aggregate(Arrays.asList(Aggregates.sample(1)));
+		try (MongoCursor<Document> cursor = coll.find().iterator()) {
+			while (cursor.hasNext()) {
+				resultJ.put(json = new JSONObject(cursor.next().toJson()));
+			}
+		}
+		return resultJ;
     }
 }
