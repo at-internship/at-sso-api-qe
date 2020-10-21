@@ -13,3 +13,7 @@ log/
 target/
 # Mongo
 src/test/resources/config.properties
+# test files
+resource.txt
+responseBody.txt
+statusCode.txt 
