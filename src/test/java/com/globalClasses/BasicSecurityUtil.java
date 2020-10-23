@@ -1,6 +1,6 @@
 package com.globalClasses;
 
-import org.springframework.http.ResponseEntity;;
+import org.springframework.http.ResponseEntity;
 
 public class BasicSecurityUtil {
 	public String environment, requestBody, responseBody, apiResource;
