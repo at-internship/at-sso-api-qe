@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class ApiTools {
 	public String hostName = ApiPaths.SSO_API_JAVA_ENDPOINT;
 	public ResponseEntity<String> response;
+	public ResponseEntity<String> requestBody;
 	public MediaType contentType = MediaType.APPLICATION_JSON;
 	public RestTemplate restTemplate = new RestTemplate();
 	public HttpHeaders headers = new HttpHeaders();
@@ -54,6 +55,34 @@ public class ApiTools {
 		
 		}
 		
+		return response;
+	}
+	
+	public ResponseEntity<String> POSTMethod(String apiPath, String requestBody) {
+
+		try {
+		    HttpHeaders headers = new HttpHeaders();
+			headers.add("OUser-Agent", "User-Agent");
+			headers.add("Content-Type", "application/json");
+
+			restTemplate.setErrorHandler(new ResponseErrorHandler() {
+				
+				@Override
+				public boolean hasError(ClientHttpResponse response) throws IOException {
+					return false;
+				}
+				
+				@Override
+				public void handleError(ClientHttpResponse response) throws IOException {
+				}
+			});
+
+			HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+			response = restTemplate.exchange(hostName + apiPath, HttpMethod.POST, requestEntity, String.class);	
+		} catch (HttpClientErrorException e) {
+			System.out.println(e.getMessage());
+			response = new ResponseEntity<String>(((HttpStatusCodeException) e).getResponseBodyAsString(),((HttpStatusCodeException) e).getStatusCode());		
+		}
 		return response;
 	}
 }
