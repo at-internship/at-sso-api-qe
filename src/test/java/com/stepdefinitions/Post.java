@@ -361,4 +361,9 @@ public class Post {
 		String json = dbres.get("email").toString();
 		assertEquals(email.toLowerCase(), json );
 	}
+
+	@Then("I validate password should be encoded")
+	public void I_validate_password_should_be_encoded() {
+		assert true == MongoDBUtils.compareEncodedPassword("TEST", "at-sso-db", "users", base.responseBody, base.requestBody);
+	}
 }

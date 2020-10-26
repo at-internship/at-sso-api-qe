@@ -535,3 +535,17 @@ Feature: at-sso post operation
 			And I prepare the resource
 	  When I send the info to create the resource at the API
 	  Then The API should indicate that the resource was not created with a 400 status code
+
+  @P44
+  Scenario: POST request should return encoded passwords on SSO-API database
+    Given I have a name
+      And I have a first name
+      And I have a last name
+      And I have an email
+      And I have a password
+      And I have a status
+      And I prepare the resource
+    When I send the info to create the resource at the API
+    Then The API should indicate that the resource was created with a 201 status code
+	  And The API should return a random id
+	  And I validate password should be encoded
