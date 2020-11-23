@@ -24,7 +24,6 @@ public class MongoDBUtils {
 		JSONArray querySelect = new JSONArray();
 		querySelect = db.executeQuerySelectID(collection, field, filter);
 		db.close();
-		System.out.println("return result");
 		return querySelect;
 	}
 	
@@ -33,7 +32,6 @@ public class MongoDBUtils {
 		JSONArray querySelect = new JSONArray();
 		querySelect = db.obtainAll(collection);
 		db.close();
-		System.out.println("return result");
 		return querySelect;
 	}
 
