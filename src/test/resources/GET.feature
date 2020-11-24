@@ -1,3 +1,4 @@
+@Regression
 Feature: at-sso get operation
 
     @Scenario1

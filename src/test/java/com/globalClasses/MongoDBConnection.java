@@ -3,6 +3,9 @@ package com.globalClasses;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +39,8 @@ public class MongoDBConnection {
       Properties prop = new Properties();
       String propFileName = "config.properties";
       InputStream inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-      
+      Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+		  mongoLogger.setLevel(Level.WARNING);
       try {
           if(inputStream != null) {
               prop.load(inputStream);
@@ -102,6 +106,9 @@ public class MongoDBConnection {
 
     for (int i=0; mongoJs.length() > i; i++){
         JSONObject jsnObject = mongoJs.getJSONObject(i);
+        if (!jsnObject.has("lastName")) {
+          jsnObject.put("lastName", JSONObject.NULL);
+        }
         jsnObject.remove("_id");
         jsnObject.remove("password");
 
@@ -115,7 +122,6 @@ public class MongoDBConnection {
         jsnObject.remove("password");
 
     }
-
     if(mongoJs.toString().equals(obj.toString())) {
         bool = true;
     }

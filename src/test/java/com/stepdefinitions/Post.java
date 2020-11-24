@@ -305,7 +305,6 @@ public class Post {
 	    	obj.put("status", stat);
 	    }
 	    base.requestBody = obj.toString();
-		System.out.println(obj.toString());
 	    stat = null;
 	}
 	
@@ -320,13 +319,12 @@ public class Post {
 	@Then("The API should indicate that the resource was created with a {int} status code")
 	public void the_API_should_indicate_that_the_resource_was_created_with_a_status_code(int statusCode) {
 		int result = Integer.parseInt(base.response.getStatusCode().toString().substring(0, 3));
-	    assertEquals(statusCode, result);
+	  assertEquals(statusCode, result);
 	}
 	
 	@Then("The API should return a random id")
 	public void the_API_should_return_a_random_id() {
-		base.responseBody = base.response.getBody();
-		System.out.println(base.responseBody);		
+		base.responseBody = base.response.getBody();	
 	}
 	
 	@Then("I check that the element with this id exist in the DB")
@@ -334,9 +332,7 @@ public class Post {
 		JSONObject result = new JSONObject(base.responseBody);
 		JSONObject dbres;
 		String idResp;
-		System.out.println(base.requestBody);
 		jsonResult = MongoDBUtils.executeMyQueryID("TEST", "at-sso-db", "users", "_id", result.getString("id"));
-		System.out.println(jsonResult);
 		dbres = jsonResult.getJSONObject(0);
 		String json = dbres.getJSONObject("_id").get("$oid").toString();
 		idResp = result.get("id").toString();
@@ -346,17 +342,14 @@ public class Post {
 	@Then("The API should indicate that the resource was not created with a {int} status code")
 	public void the_API_should_indicate_that_the_resource_was_not_created_with_a_status_code(int statusCode) {
 		int result = Integer.parseInt(base.response.getStatusCode().toString().substring(0, 3));
-	    assertEquals(statusCode, result);
-	    System.out.println("Status Code Recived: "+ result);
+	  assertEquals(statusCode, result);
 	}
 	
 	@Then("It should be registered in lowercase")
 	public void it_should_be_registered_in_lowercase() {
 		JSONObject result = new JSONObject(base.responseBody);
 		JSONObject dbres;
-		System.out.println(base.requestBody);
 		jsonResult = MongoDBUtils.executeMyQueryID("TEST", "at-sso-db", "users", "_id", result.getString("id"));
-		System.out.println(jsonResult);
 		dbres = jsonResult.getJSONObject(0);
 		String json = dbres.get("email").toString();
 		assertEquals(email.toLowerCase(), json );
