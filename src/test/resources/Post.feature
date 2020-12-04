@@ -476,10 +476,11 @@ Feature: at-sso post operation
       | status    | negative |
     And I prepare the resource
     When I send the info to create the resource at the API
-    Then The API should indicate that the resource was not created with a 400 status code
+    Then The API should indicate that the resource was created with a 201 status code
+    And The status field should have the correct default value in the DB
 
   @POST36
-  Scenario: Send a differen value than zero or one in the status field
+  Scenario: Send a different value than zero or one in the status field
     Given I create a request as follow
       | name      | random      |
       | firstName | random      |
@@ -489,7 +490,8 @@ Feature: at-sso post operation
       | status    | noCeroOrOne |
     And I prepare the resource
     When I send the info to create the resource at the API
-    Then The API should indicate that the resource was not created with a 400 status code
+    Then The API should indicate that the resource was created with a 201 status code
+    And The status field should have the correct default value in the DB
 
   @POST37
   Scenario: Send the status field empty

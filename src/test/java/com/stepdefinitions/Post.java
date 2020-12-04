@@ -154,7 +154,7 @@ public class Post {
 			} else if("negative".equalsIgnoreCase(request.get("status"))) {
 				req.setStatus(String.valueOf(-1));
 			} else if("noCeroOrOne".equalsIgnoreCase(request.get("status"))) {
-				req.setStatus(String.valueOf((int) (Math.random()*(9-2+1)+0)));
+				req.setStatus(String.valueOf((int) (Math.random()+2)));
 			} else if("empty".equalsIgnoreCase(request.get("status"))) {
 				req.setStatus("");
 			} else if("null".equalsIgnoreCase(request.get("status"))) {
@@ -228,6 +228,7 @@ public class Post {
 
 	@Then("The name field should have the correct default string in the DB")
 	public void the_name_field_should_have_the_correct_default_string_in_the_DB() {
+    base.responseBody = base.response.getBody();
 		JSONObject result = new JSONObject(base.responseBody);
 		JSONObject dbres;
 		jsonResult = MongoDBUtils.executeMyQueryID("TEST", "at-sso-db", "users", "_id", result.getString("id"));
@@ -239,6 +240,7 @@ public class Post {
 
 	@Then("The status field should have the correct default value in the DB")
 	public void the_status_field_should_have_the_correct_default_value_in_the_DB() {
+    base.responseBody = base.response.getBody();
 		JSONObject result = new JSONObject(base.responseBody);
 		JSONObject dbres;
 		jsonResult = MongoDBUtils.executeMyQueryID("TEST", "at-sso-db", "users", "_id", result.getString("id"));
